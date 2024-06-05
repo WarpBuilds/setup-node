@@ -61,7 +61,7 @@ const cachePackages = async (packageManager: string) => {
   }
 
   const cacheId = await cache.saveCache(cachePaths, primaryKey);
-  if (cacheId == -1) {
+  if (cacheId == '') {
     return;
   }
 
