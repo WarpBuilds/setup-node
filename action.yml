@@ -1,6 +1,6 @@
 name: 'Setup Node.js environment'
 description: 'Setup a Node.js environment by adding problem matchers and optionally downloading and adding it to the PATH.'
-author: 'GitHub'
+author: 'WarpBuild'
 inputs:
   always-auth:
     description: 'Set always-auth in npmrc.'
@@ -28,7 +28,7 @@ inputs:
 # TODO: add input to control forcing to pull from cloud or dist.
 #       escape valve for someone having issues or needing the absolute latest which isn't cached yet
 outputs:
-  cache-hit: 
+  cache-hit:
     description: 'A boolean value to indicate if a cache was hit.'
   node-version:
     description: 'The installed node version.'
