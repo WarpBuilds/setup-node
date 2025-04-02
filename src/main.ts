@@ -76,6 +76,7 @@ export async function run() {
   } catch (err) {
     core.setFailed((err as Error).message);
   }
+  process.exit(0);
 }
 
 function resolveVersionInput(): string {
