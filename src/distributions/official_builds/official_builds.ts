@@ -84,7 +84,7 @@ export default class OfficialBuilds extends BaseDistribution {
         downloadPath = await tc.downloadTool(
           versionInfo.downloadUrl,
           undefined,
-          this.nodeInfo.auth
+          this.nodeInfo.mirror ? this.nodeInfo.mirrorToken : this.nodeInfo.auth
         );
 
         if (downloadPath) {
@@ -96,7 +96,9 @@ export default class OfficialBuilds extends BaseDistribution {
         }
       } else {
         core.info(
-          'Not found in manifest. Falling back to download directly from Node'
+          `Not found in manifest. Falling back to download directly from ${
+            this.nodeInfo.mirror || 'Node'
+          }`
         );
       }
     } catch (err) {
@@ -176,8 +178,9 @@ export default class OfficialBuilds extends BaseDistribution {
     return version;
   }
 
-  protected getDistributionUrl(): string {
-    return `https://nodejs.org/dist`;
+  protected getDistributionUrl(mirror: string): string {
+    const url = mirror || 'https://nodejs.org';
+    return `${url}/dist`;
   }
 
   private getManifest(): Promise<tc.IToolRelease[]> {
@@ -185,7 +188,7 @@ export default class OfficialBuilds extends BaseDistribution {
     return tc.getManifestFromRepo(
       'actions',
       'node-versions',
-      this.nodeInfo.auth,
+      this.nodeInfo.mirror ? this.nodeInfo.mirrorToken : this.nodeInfo.auth,
       'main'
     );
   }
@@ -218,8 +221,8 @@ export default class OfficialBuilds extends BaseDistribution {
       alias === '*'
         ? numbered[numbered.length - 1]
         : n < 0
-        ? numbered[numbered.length - 1 + n]
-        : aliases[alias];
+          ? numbered[numbered.length - 1 + n]
+          : aliases[alias];
 
     if (!release) {
       throw new Error(
